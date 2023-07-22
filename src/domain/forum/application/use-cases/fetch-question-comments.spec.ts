@@ -1,4 +1,3 @@
-import { makeAnswer } from "test/factories/make-answer";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository";
 import { FetchRecentQuestionCommentsUseCase } from "./fetch-question-comments";

@@ -15,7 +15,7 @@ export class InMemoryQuestionCommentsRepository implements QuestionCommentsRepos
     return questionComment;
   }
 
-  async findManyByQuestion(questionId: string, { page }: PaginationParams) {
+  async findManyByQuestionId(questionId: string, { page }: PaginationParams) {
     const questionComments = this.items.filter((item) => item.questionId.toString() === questionId).slice((page - 1) * 20, page * 20);
 
     return questionComments;
