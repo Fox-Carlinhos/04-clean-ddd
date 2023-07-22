@@ -17,8 +17,6 @@ describe("Edit Question", () => {
 
     await inMemoryQuestionsRepository.create(newQuestion);
 
-    console.log(newQuestion);
-
     await sut.execute({
       questionId: "test-id",
       authorId: "author-1",
