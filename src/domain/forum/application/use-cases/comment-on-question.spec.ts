@@ -13,7 +13,7 @@ describe("Create comment on a question", () => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
     sut = new CommentOnQuestionUseCase(inMemoryQuestionsRepository, inMemoryQuestionCommentsRepository);
   });
-  it("sould be able to create a Question", async () => {
+  it("sould be able to create comment on a question", async () => {
     const question = makeQuestion();
 
     await inMemoryQuestionsRepository.create(question);
