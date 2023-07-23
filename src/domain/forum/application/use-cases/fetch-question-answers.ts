@@ -1,25 +1,23 @@
 import { Either, right } from "@/core/either";
 import { Answer } from "../../enterprise/entities/answer";
 import { AnswersRepository } from "../repositories/answer-repository";
-import { NotAllowedError } from "./errors/not-allowed-error";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
-interface FetchRecentAnswersUseCaseRequest {
+interface FetchQuestionAnswersUseCaseRequest {
   page: number;
   questionId: string;
 }
 
-type FetchRecentAnswersUseCaseResponse = Either<
+type FetchQuestionAnswersUseCaseResponse = Either<
   null,
   {
     answers: Answer[];
   }
 >;
 
-export class FetchRecentAnswersUseCase {
+export class FetchQuestionAnswersUseCase {
   constructor(private answersRepository: AnswersRepository) {}
 
-  async execute({ questionId, page }: FetchRecentAnswersUseCaseRequest): Promise<FetchRecentAnswersUseCaseResponse> {
+  async execute({ questionId, page }: FetchQuestionAnswersUseCaseRequest): Promise<FetchQuestionAnswersUseCaseResponse> {
     const answers = await this.answersRepository.findManyByQuestionId(questionId, { page });
 
     return right({ answers });

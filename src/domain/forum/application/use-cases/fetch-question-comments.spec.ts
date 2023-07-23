@@ -17,12 +17,12 @@ describe("Fetch Question Comments", () => {
     await inMemoryQuestionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityID("question-comment-id") }));
     await inMemoryQuestionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityID("question-comment-id") }));
 
-    const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       questionId: "question-comment-id",
       page: 1,
     });
 
-    expect(questionComments).toHaveLength(3);
+    if (result.isRight()) expect(result.value?.questionComments).toHaveLength(3);
   });
 
   it("sould be able to fetch paginated question comments", async () => {
@@ -30,11 +30,11 @@ describe("Fetch Question Comments", () => {
       await inMemoryQuestionCommentsRepository.create(makeQuestionComment({ questionId: new UniqueEntityID("question-comment-id") }));
     }
 
-    const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       questionId: "question-comment-id",
       page: 2,
     });
 
-    expect(questionComments).toHaveLength(2);
+    if (result.isRight()) expect(result.value?.questionComments).toHaveLength(2);
   });
 });

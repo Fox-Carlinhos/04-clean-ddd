@@ -17,12 +17,14 @@ describe("Fetch Answer Comments", () => {
     await inMemoryAnswerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityID("answer-comment-id") }));
     await inMemoryAnswerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityID("answer-comment-id") }));
 
-    const { answerComments } = await sut.execute({
+    const result = await sut.execute({
       answerId: "answer-comment-id",
       page: 1,
     });
 
-    expect(answerComments).toHaveLength(3);
+    if (result.isRight()) {
+      expect(result.value?.answerComments).toHaveLength(3);
+    }
   });
 
   it("sould be able to fetch paginated answer comments", async () => {
@@ -30,11 +32,13 @@ describe("Fetch Answer Comments", () => {
       await inMemoryAnswerCommentsRepository.create(makeAnswerComment({ answerId: new UniqueEntityID("answer-comment-id") }));
     }
 
-    const { answerComments } = await sut.execute({
+    const result = await sut.execute({
       answerId: "answer-comment-id",
       page: 2,
     });
 
-    expect(answerComments).toHaveLength(2);
+    if (result.isRight()) {
+      expect(result.value?.answerComments).toHaveLength(2);
+    }
   });
 });

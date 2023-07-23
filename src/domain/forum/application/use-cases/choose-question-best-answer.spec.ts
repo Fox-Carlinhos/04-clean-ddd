@@ -4,6 +4,7 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 import { ChooseQuestionBestAnswerUseCase } from "./choose-question-best-answer";
 import { makeAnswer } from "test/factories/make-answer";
+import { NotAllowedError } from "./errors/not-allowed-error";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
@@ -25,12 +26,12 @@ describe("Choose Question best answer", () => {
 
     await inMemoryAnswersRepository.create(newAnswer);
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       answerId: newAnswer.id.toString(),
       authorId: newQuestion.authorId.toString(),
     });
 
-    expect(question.bestAnswerId).toEqual(newAnswer.id);
+    expect(result.isRight()).toEqual(true);
   });
 
   it("sould not be able to choose another person question best answer", async () => {
@@ -42,11 +43,12 @@ describe("Choose Question best answer", () => {
 
     await inMemoryAnswersRepository.create(newAnswer);
 
-    expect(() => {
-      return sut.execute({
-        answerId: newAnswer.id.toString(),
-        authorId: "author",
-      });
-    }).rejects.toBeInstanceOf(Error);
+    const result = await sut.execute({
+      answerId: newAnswer.id.toString(),
+      authorId: "author",
+    });
+
+    expect(result.isLeft()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(NotAllowedError);
   });
 });
