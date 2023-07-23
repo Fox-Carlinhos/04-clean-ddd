@@ -1,14 +1,20 @@
+import { Either, left, right } from "@/core/either";
 import { QuestionComment } from "../../enterprise/entities/question-comments";
 import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
+import { NotAllowedError } from "./errors/not-allowed-error";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface FetchRecentQuestionCommentsUseCaseRequest {
   page: number;
   questionId: string;
 }
 
-interface FetchRecentQuestionCommentsUseCaseResponse {
-  questionComments: QuestionComment[];
-}
+type FetchRecentQuestionCommentsUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  {
+    questionComments: QuestionComment[];
+  }
+>;
 
 export class FetchRecentQuestionCommentsUseCase {
   constructor(private QuestionCommentsRepository: QuestionCommentsRepository) {}
@@ -17,9 +23,9 @@ export class FetchRecentQuestionCommentsUseCase {
     const questionComments = await this.QuestionCommentsRepository.findManyByQuestionId(questionId, { page });
 
     if (!questionComments) {
-      throw new Error("Question comments not found.");
+      return left(new ResourceNotFoundError());
     }
 
-    return { questionComments };
+    return right({ questionComments });
   }
 }
