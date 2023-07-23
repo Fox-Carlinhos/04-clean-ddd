@@ -3,6 +3,7 @@ import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 import dayjs from "dayjs";
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 
 export interface QuestionProps {
   authorId: UniqueEntityID;
@@ -13,7 +14,7 @@ export interface QuestionProps {
   createdAt: Date;
   updatedAt?: Date;
 }
-export class Question extends Entity<QuestionProps> {
+export class Question extends AggregateRoot<QuestionProps> {
   get authorId() {
     return this.props.authorId;
   }
