@@ -15,7 +15,7 @@ export class QuestionAttachment extends Entity<QuestionAttachmentProps> {
     return this.props.attachmentId;
   }
 
-  static crete(props: QuestionAttachmentProps, id?: UniqueEntityID) {
+  static create(props: QuestionAttachmentProps, id?: UniqueEntityID) {
     const attachment = new QuestionAttachment(props, id);
 
     return attachment;
