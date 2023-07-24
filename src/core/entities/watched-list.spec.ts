@@ -37,8 +37,6 @@ describe("Watched List", () => {
     list.remove(2);
     list.add(2);
 
-    console.log(list.currentItems);
-
     expect(list.currentItems).toHaveLength(3);
 
     expect(list.getRemovedItems()).toEqual([]);
@@ -50,8 +48,6 @@ describe("Watched List", () => {
 
     list.add(4);
     list.remove(4);
-
-    console.log(list.currentItems);
 
     expect(list.currentItems).toHaveLength(3);
 
