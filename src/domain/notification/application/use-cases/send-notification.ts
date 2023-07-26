@@ -1,26 +1,29 @@
-import { Either, right } from "@/core/either";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Either, right } from "@/core/either";
 import { Notification } from "../../enterprise/entities/notification";
 import { NotificationsRepository } from "../repositories/notification-repository";
 
-interface SendNotificationUseCaseRequest {
+export interface SendNotificationUseCaseRequest {
   recipientId: string;
   title: string;
   content: string;
-  readAt?: Date;
 }
 
-type SendNotificationUseCaseResponse = Either<null, { notification: Notification }>;
+export type SendNotificationUseCaseResponse = Either<
+  null,
+  {
+    notification: Notification;
+  }
+>;
 
 export class SendNotificationUseCase {
   constructor(private notificationsRepository: NotificationsRepository) {}
 
-  async execute({ recipientId, content, title, readAt }: SendNotificationUseCaseRequest): Promise<SendNotificationUseCaseResponse> {
+  async execute({ recipientId, title, content }: SendNotificationUseCaseRequest): Promise<SendNotificationUseCaseResponse> {
     const notification = Notification.create({
+      recipientId: new UniqueEntityID(recipientId),
       title,
       content,
-      recipientId: new UniqueEntityID(recipientId),
-      readAt,
     });
 
     await this.notificationsRepository.create(notification);
